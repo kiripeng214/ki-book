@@ -9,14 +9,14 @@ type User struct {
 	Id     int64
 	Name   string
 	Secret string
-	Age    int64
+	Age    uint64
 	Phone  string
 }
 
 type UserRepo interface {
-	CreateUser(ctx context.Context,u *User) (*User,error)
-	GetUser(ctx context.Context,id int64) (*User,error)
-	VerifyPassword(ctx context.Context,u *User)(bool,error)
+	CreateUser(ctx context.Context, u *User) (*User, error)
+	GetUser(ctx context.Context, id int64) (*User, error)
+	VerifyPassword(ctx context.Context, u *User) (bool, error)
 }
 
 type UserUseCase struct {
