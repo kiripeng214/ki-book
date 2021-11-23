@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
 	"ki-book/app/user/internal/biz"
+	"ki-book/app/user/internal/data/ent/user"
 	"ki-book/app/user/internal/pkg/util"
 )
 
@@ -52,6 +53,16 @@ func (u2 userRepo) GetUser(ctx context.Context, id int64) (*biz.User, error) {
 	return &biz.User{Id: user.ID, Name: user.Name, Age: user.Age, Phone: user.Phone}, err
 }
 
-func (u2 userRepo) VerifyPassword(ctx context.Context, u *biz.User) (bool, error) {
-	panic("implement me")
+func (u2 userRepo) VerifyPassword(ctx context.Context, u *biz.User) (*biz.User, error) {
+	po, err := u2.data.db.User.
+		Query().
+		Where(user.NameEQ(u.Name)).
+		Only(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &biz.User{
+		Id:      po.ID,
+		IsExist: util.CheckPasswordHash(u.Secret, po.Secret),
+	}, nil
 }

@@ -4,7 +4,6 @@ package user.service.v1;
 
 import "google/api/annotations.proto";
 
-
 option go_package = "ki-book/api/user/service/v1;v1";
 
 

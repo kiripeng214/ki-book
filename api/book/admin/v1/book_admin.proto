@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package book.admin.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "ki-book/api/book/admin/v1;v1";
+
+service BookAdmin{
+  rpc Login(LoginReq) returns (LoginReply){
+    option (google.api.http) = {
+      post: "/book/admin/v1/login"
+      body: "*"
+    };
+  }
+}
+
+message LoginReq{
+  string username = 1;
+  string password = 2;
+}
+
+message LoginReply {
+  int64 id = 1;
+  string name = 2;
+  uint64 age = 3;
+  string phone = 4;
+}

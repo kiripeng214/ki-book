@@ -11,6 +11,7 @@ import (
 	v1 "ki-book/api/user/service/v1"
 	conf2 "ki-book/app/user/internal/conf"
 	service2 "ki-book/app/user/internal/service"
+	"ki-book/app/user/middleware"
 )
 
 // NewGRPCServer new a gRPC server.
@@ -22,6 +23,8 @@ func NewGRPCServer(c *conf2.Server, userService *service2.UserService, logger lo
 			logging.Server(logger),
 			metrics.Server(),
 			validate.Validator(),
+			middleware.CheckOut(),
+			NewAuthServer,
 		),
 	}
 	if c.Grpc.Network != "" {
@@ -33,7 +36,9 @@ func NewGRPCServer(c *conf2.Server, userService *service2.UserService, logger lo
 	if c.Grpc.Timeout != nil {
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
+
 	srv := grpc.NewServer(opts...)
+
 	v1.RegisterUserServer(srv, userService)
 	return srv
 }

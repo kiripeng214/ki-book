@@ -10,15 +10,14 @@ import (
 // ProviderSet is service providers.
 var ProviderSet = wire.NewSet(NewUserService)
 
-
 type UserService struct {
 	v1.UnimplementedUserServer
 
-	uc *biz.UserUseCase
+	uc  *biz.UserUseCase
 	log *log.Helper
 }
 
-func NewUserService(uc *biz.UserUseCase,logger log.Logger) *UserService{
+func NewUserService(uc *biz.UserUseCase, logger log.Logger) *UserService {
 	return &UserService{
 		uc:  uc,
 		log: log.NewHelper(log.With(logger, "module", "service/server-service"))}

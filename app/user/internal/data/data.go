@@ -9,19 +9,19 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData,NewEntClient, NewUserRepo)
+var ProviderSet = wire.NewSet(NewData, NewEntClient, NewUserRepo)
 
 // Data .
 type Data struct {
 	db *ent.Client
 }
 
-func NewEntClient(c *conf.Data,logger log.Logger) *ent.Client{
-	logs := log.NewHelper(log.With(logger,"moudle","user-service/data/ent"))
-	client,err := ent.Open(
+func NewEntClient(c *conf.Data, logger log.Logger) *ent.Client {
+	logs := log.NewHelper(log.With(logger, "moudle", "user-service/data/ent"))
+	client, err := ent.Open(
 		c.Database.Driver,
 		c.Database.Source,
-		)
+	)
 	if err != nil {
 		logs.Fatalf("failed opening connection to db: %v", err)
 	}
@@ -36,7 +36,7 @@ func NewData(entClient *ent.Client, logger log.Logger) (*Data, func(), error) {
 
 	logs := log.NewHelper(log.With(logger, "module", "user-service/data"))
 
-	d := &Data{db:entClient}
+	d := &Data{db: entClient}
 	return d, func() {
 		if err := d.db.Close(); err != nil {
 			logs.Error(err)

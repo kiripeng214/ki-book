@@ -6,17 +6,18 @@ import (
 )
 
 type User struct {
-	Id     int64
-	Name   string
-	Secret string
-	Age    uint64
-	Phone  string
+	Id      int64
+	Name    string
+	Secret  string
+	Age     uint64
+	Phone   string
+	IsExist bool
 }
 
 type UserRepo interface {
 	CreateUser(ctx context.Context, u *User) (*User, error)
 	GetUser(ctx context.Context, id int64) (*User, error)
-	VerifyPassword(ctx context.Context, u *User) (bool, error)
+	VerifyPassword(ctx context.Context, u *User) (*User, error)
 }
 
 type UserUseCase struct {
@@ -40,6 +41,6 @@ func (uc *UserUseCase) GetUser(ctx context.Context, id int64) (*User, error) {
 	return uc.repo.GetUser(ctx, id)
 }
 
-func (uc *UserUseCase) VerifyPassword(ctx context.Context, u *User) (bool, error) {
+func (uc *UserUseCase) VerifyPassword(ctx context.Context, u *User) (*User, error) {
 	return uc.repo.VerifyPassword(ctx, u)
 }
